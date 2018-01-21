@@ -353,23 +353,23 @@ set wrapmargin=0
 " 15  'copyindent'      'ci'      make 'autoindent' use existing indent structure
 " set copyindent
 " 15  'expandtab'       'et'      use spaces when <Tab> is inserted
-set expandtab
+" set expandtab
 " 15  'indentexpr'      'inde'    expression used to obtain the indent of a line
 " 15  'indentkeys'      'indk'    keys that trigger indenting with 'indentexpr'
 " 15  'lisp'                      automatic indenting for Lisp
 " 15  'lispwords'       'lw'      words that change how lisp indenting works
 " 15  'preserveindent'  'pi'      preserve the indent structure when reindenting
-set preserveindent
+" set preserveindent
 " 15  'shiftround'      'sr'      round indent to multiple of shiftwidth
 " set shiftround
 " 15  'shiftwidth'      'sw'      number of spaces to use for (auto)indent step
-set shiftwidth=4
+set shiftwidth=8
 " 15  'smartindent'     'si'      smart autoindenting for C programs
-set smartindent
+" set smartindent
 " 15  'smarttab'        'sta'     use 'shiftwidth' when inserting <Tab>
-set smarttab
+" set smarttab
 " 15  'softtabstop'     'sts'     number of spaces that <Tab> uses while editing
-set softtabstop=4
+" set softtabstop=4
 " 15  'tabstop'         'ts'      number of spaces that <Tab> in file uses
 set tabstop=8
 " }}}
@@ -745,9 +745,13 @@ augroup END
 " }}}
 " Shell {{{
 
-" let b:sh_indent_options = {}
-" let b:sh_indent_options['continuation-line'] = 2
-" let b:sh_indent_options['sublist-line'] = 4
+let b:sh_indent_options = {}
+let b:sh_indent_options['case-breaks'] = 0
+let b:sh_indent_options['case-labels'] = 4
+let b:sh_indent_options['case-statements'] = 4
+let b:sh_indent_options['continuation-line'] = 4
+let b:sh_indent_options['default'] = 4
+let b:sh_indent_options['pipe-line'] = 4
 
 " let g:is_posix = 1
 let g:sh_fold_enabled = 3
@@ -755,7 +759,7 @@ let g:sh_fold_enabled = 3
 augroup ft_sh
     autocmd!
     autocmd BufNewFile,BufEnter *.{da,mk}sh setlocal filetype=sh
-    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=4 tabstop=4
+    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4  softtabstop=0 tabstop=4
 augroup END
 
 " }}}
