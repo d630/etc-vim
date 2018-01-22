@@ -4,6 +4,12 @@
 " D630
 " Fork of: https://github.com/chrisbra/vim-sh-indent
 
+
+" TODO:
+" - rewrite case handling
+" - " and '
+" - pipe, continuation, termination
+
 if exists("b:did_indent")
   finish
 endif
@@ -54,30 +60,29 @@ function! GetShIndent()
   let ind = indent(lnum)
   let line = getline(lnum)
 
-  if line =~ '^\s*\%(if\|then\|do\|case\|else\|elif\|while\|until\|for\|select\)\>'
-    if line !~ '\<\%(fi\|done\|esac\)\>\s*\%(#.*\)\=$'
+  if s:is_compound_cmd(line)
+    if !s:is_compound_cmd_end(line)
       let ind += s:indent_value('default')
     endif
   elseif s:is_case_label(line, pnum)
     if !s:is_case_ended(line)
       let ind += s:indent_value('case-statements')
     endif
-  elseif line =~ '^\s*\<\k\+\>\s*()\s*\%({\|\[\|(\)'
-        \ || line =~ '^\s*\%({\|\[\|(\|"\|''\)'
-        \ || line =~ '\%({\|\[\|(\)$'
-        \ || line =~ '^\s*function\s*\w\S\+\s*\%(()\)\?\s*\%({\|\[\|(\)'
-    if line !~ '\%(}\|\]\|)\)\s*\%(#.*\)\=$'
+  elseif s:is_func_def(line)
+    if !s:is_compound_cmd_end(line)
+      let ind = ind
+      " let ind += s:indent_value('default')
+    endif
+  elseif s:is_substitution(line)
+    if !s:is_substitution_end(line)
       let ind += s:indent_value('default')
     endif
   elseif s:is_terminator_line(line)
     let pine = getline(pnum)
     if pnum == 0
           \ || (s:is_terminator_line(pine) && indent(pnum) <= ind)
-          \ || pine =~ '^\s*\%(if\|then\|do\|case\|else\|elif\|while\|until\|for\|select\)\>'
-          \ || pine =~ '^\s*\<\k\+\>\s*()\s*\%({\|\[\|(\)'
-          \ || pine =~ '^\s*\%({\|\[\|(\)'
-          \ || pine =~ '\%({\|\[\|(\)$'
-          \ || pine =~ '^\s*function\s*\w\S\+\s*\%(()\)\?\s*\%({\|\[\|(\)'
+          \ || s:is_compound_cmd(pine)
+          \ || s:is_func_def(pine)
       let ind = ind
     else
       let ind = indent(s:find_terminated_lnum(pnum, lnum))
@@ -90,15 +95,13 @@ function! GetShIndent()
       let ind = s:indent_value('pipe-line')
     else
       let pind = indent(s:find_piped_lnum(pnum, lnum))
-      if pind == rind
-        let ind = pind + s:indent_value('pipe-line')
+      if s:is_continuation_line(getline(pnum))
+            \ || line =~ '^\s*\%(}\|)\|\]\|"\|''\)'
+        let ind -= s:indent_value('continuation-line')
+      " elseif pind == rind
+      "   let ind = pind + s:indent_value('pipe-line')
       else
-        if s:is_continuation_line(getline(pnum))
-              \ || line =~ '^\s*\%(}\|)\|\]\|"\|''\)'
-          let ind = pind - s:indent_value('pipe-line')
-        else
-          let ind = pind
-        endif
+        let ind = ind
       endif
     endif
   elseif s:is_continuation_line(line)
@@ -117,12 +120,11 @@ function! GetShIndent()
   let pine = line
   let line = getline(v:lnum)
 
-  if line =~ '^\s*\%(then\|do\|else\|elif\|fi\|done\)\>'
-        \ || line =~ '^\s*\%(}\|\]\|)\)'
+  if s:is_compound_cmd_attention(line)
     let ind -= s:indent_value('default')
-  elseif line =~ '^\s*esac\>' && s:is_case_empty(getline(v:lnum - 1))
+  elseif line =~ '\%(^\|\s*\)\zs\<\esac\>\s*' && s:is_case_empty(getline(v:lnum - 1))
     let ind -= s:indent_value('default')
-  elseif line =~ '^\s*esac\>'
+  elseif line =~ '\%(^\|\s*\)\zs\<\esac\>\s*'
     let ind -= (s:is_case_label(pine, lnum) && s:is_case_ended(pine) ?
           \ 0 : s:indent_value('case-statements')) +
           \ s:indent_value('case-labels')
@@ -149,20 +151,49 @@ function! GetShIndent()
   return ind
 endfunction
 
+function! s:is_substitution(line)
+  return a:line =~ '\%(^\|\s*\)\zs\%([<>]\|\$\)\%((\|{\|\[\)'
+endfunction
+
+function! s:is_substitution_end(line)
+  return a:line =~ '\%()\|}\|\]\)\s*\%(;*\|&*\|;;&\=\|;&\)\=\s*\%(#.*\)\=$'
+endfunction
+
+function! s:is_compound_cmd(line)
+  return a:line =~ '\%(^\|\s*\)\zs\<\%(if\|then\|else\|elif\|for\|select\|until\|while\|do\|case\)\>'
+        \ || a:line =~ '\%(^\|\s*\)\zs\$\@<!\%((\|{\|\[\)'
+endfunction
+
+function! s:is_compound_cmd_end(line)
+  return a:line =~ '\<\%(fi\|done\|esac\)\>\s*\%(;*\|&*\|;;&\=\|;&\)\=\s*\%(#.*\)\=$'
+        \ || a:line =~ '\%()\|}\|\]\)\s*\%(;*\|&*\|;;&\=\|;&\)\=\s*\%(#.*\)\=$'
+endfunction
+
+function! s:is_compound_cmd_attention(line)
+  return a:line =~ '\%(^\|\s*\)\zs\<\%(do\|elif\|then\|else\|fi\|done\)\>'
+        \ || a:line =~ '\%(^\|\s*\)\zs\$\@<!\%([^(])\|}\|\]\)'
+endfunction
+
+function! s:is_func_def(line)
+  return a:line =~ '\<[^[:cntrl:]|&;()<>$`\\#\*[:space:]""']\+\>\s*()'
+  " return a:line =~ '^\s*\<\k\+\>\s*()\s*'
+        \ || a:line =~ '^\s*function\s*\w\S\+\s*\%(()\)\?'
+endfunction
+
 function! s:is_continuation_line(line)
-  return a:line =~ '\%(\%(^\|[^\\]\)\\\)$'
+  return a:line =~ '\%(\%(^\|[^\\]\)\\\)\s*\%(#.*\)\=$'
 endfunction
 
 function! s:is_pipe_line(line)
-  return a:line =~ '\%(|\)$'
+  return a:line =~ '\%(|\)\s*\%(#.*\)\=$'
 endfunction
 
 function! s:is_sublist_line(line)
-  return a:line =~ '^\s*\%(&&\|||\)'
+  return a:line =~ '\%(^\|\s*\)\zs\%(&&\|||\)\s*\%(#.*\)\=$'
 endfunction
 
 function! s:is_terminator_line(line)
-  return a:line =~ '\%(;\|&\)$'
+  return a:line =~ '\%(;\|&\)\s*\%(#.*\)\=$'
 endfunction
 
 function! s:find_continued_lnum(lnum, num)
@@ -170,7 +201,7 @@ function! s:find_continued_lnum(lnum, num)
   let ind = indent(a:num)
   while i > 1
     let line = getline(i - 1)
-    if !s:is_continuation_line(line) && indent(i - 1) < ind
+    if !empty(line) && !s:is_continuation_line(line) && indent(i - 1) < ind
       return i
     else
       let i -= 1
@@ -184,7 +215,7 @@ function! s:find_piped_lnum(lnum, num)
   let ind = indent(a:num)
   while i > 1
     let line = getline(i - 1)
-    if !s:is_pipe_line(line) && indent(i - 1) < ind
+    if !empty(line) && !s:is_pipe_line(line) && indent(i - 1) < ind
       return i
     else
       let i -= 1
@@ -198,7 +229,7 @@ function! s:find_terminated_lnum(lnum, num)
   let ind = indent(a:num)
   while i > 1
     let line = getline(i - 1)
-    if !s:is_terminator_line(getline(i - 1)) && indent(i - 1) < ind
+    if !empty(line) && !s:is_terminator_line(line) && indent(i - 1) < ind
       if line =~ '^\s*\%(if\|then\|do\|case\|else\|elif\|while\|until\|for\|select\)\>'
             \ || line =~ '^\s*\<\k\+\>\s*()\s*\%({\|\[\|(\)'
             \ || line =~ '^\s*\%({\|\[\|(\)'
