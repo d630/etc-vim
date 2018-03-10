@@ -121,28 +121,30 @@ function! GetShIndent()
   let line = getline(v:lnum)
 
   if s:is_compound_cmd_attention(line)
-    let ind -= s:indent_value('default')
+    return ind - s:indent_value('default')
   elseif line =~ '\%(^\|\s*\)\zs\<\esac\>\s*' && s:is_case_empty(getline(v:lnum - 1))
-    let ind -= s:indent_value('default')
+    return ind - s:indent_value('default')
   elseif line =~ '\%(^\|\s*\)\zs\<\esac\>\s*'
     let ind -= (s:is_case_label(pine, lnum) && s:is_case_ended(pine) ?
           \ 0 : s:indent_value('case-statements')) +
           \ s:indent_value('case-labels')
     if s:is_case_break(pine)
-      let ind += s:indent_value('case-breaks')
+      return ind + s:indent_value('case-breaks')
+    else
+      return ind
     endif
   elseif s:is_case_label(line, lnum)
     if s:is_case(pine)
-      let ind = indent(lnum) + s:indent_value('case-labels')
+      return indent(lnum) + s:indent_value('case-labels')
     else
-      let ind -= (s:is_case_label(pine, lnum) && s:is_case_ended(pine) ?
+      return ind - (s:is_case_label(pine, lnum) && s:is_case_ended(pine) ?
             \ 0 : s:indent_value('case-statements')) -
             \ s:indent_value('case-breaks')
     endif
   elseif s:is_case_break(line)
-    let ind -= s:indent_value('case-breaks')
+    return ind - s:indent_value('case-breaks')
   elseif s:is_here_doc(line)
-    let ind = 0
+    return 0
   " statements, executed within a here document. Keep the current indent
   elseif match(map(synstack(v:lnum, 1), 'synIDattr(v:val, "name")'), '\c\mheredoc') > -1
     return indent(v:lnum)

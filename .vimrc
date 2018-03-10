@@ -724,6 +724,7 @@ augroup END " }}}
 augroup ft_markdown
     autocmd!
     autocmd BufNewFile,BufRead *.m\(ark\|\)d\(own\|\) setlocal filetype=markdown
+    autocmd FileType markdown setlocal expandtab shiftwidth=4 softtabstop=0 tabstop=4
 augroup END
 
 " }}}
@@ -732,6 +733,7 @@ augroup END
 augroup ft_markdown.pandoc
     autocmd!
     autocmd BufNewFile,BufRead *.mkd setlocal filetype=markdown.pandoc
+    autocmd FileType markdown.pandoc setlocal expandtab shiftwidth=4 softtabstop=0 tabstop=4
 augroup END
 
 " }}}
@@ -759,9 +761,16 @@ let g:sh_fold_enabled = 3
 augroup ft_sh
     autocmd!
     autocmd BufNewFile,BufEnter *.{da,mk}sh setlocal filetype=sh
-    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4  softtabstop=0 tabstop=4
+    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=0 tabstop=4
 augroup END
 
+" }}}
+" Java {{{
+augroup ft_java
+    autocmd!
+    autocmd BufNewFile,BufEnter *.java setlocal filetype=java
+    autocmd FileType java setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=0 tabstop=2 colorcolumn=100
+augroup END
 " }}}
 " }}}
 " COLOR ------------------------------------------------------------------- {{{
