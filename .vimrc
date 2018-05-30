@@ -769,7 +769,14 @@ augroup END
 augroup ft_java
     autocmd!
     autocmd BufNewFile,BufEnter *.java setlocal filetype=java
-    autocmd FileType java setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=0 tabstop=2 colorcolumn=100
+    autocmd FileType java setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=100 commentstring=//\ %s
+augroup END
+" }}}
+" C {{{
+augroup ft_c
+    autocmd!
+    autocmd BufNewFile,BufEnter *.c setlocal filetype=c
+    autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent cinoptions=:0,l1,t0,g0,(0
 augroup END
 " }}}
 " }}}
