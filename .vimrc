@@ -349,6 +349,7 @@ set wrapmargin=0
 " 15  'cindent'         'cin'     do C program indenting
 " 15  'cinkeys'         'cink'    keys that trigger indent when 'cindent' is set
 " 15  'cinoptions'      'cino'    how to do indenting when 'cindent' is set
+set cinoptions=:0,l1,t0,g0,(0
 " 15  'cinwords'        'cinw'    words where 'si' and 'cin' add an indent
 " 15  'copyindent'      'ci'      make 'autoindent' use existing indent structure
 " set copyindent
@@ -776,7 +777,7 @@ augroup END
 augroup ft_c
     autocmd!
     autocmd BufNewFile,BufEnter *.c setlocal filetype=c
-    autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent cinoptions=:0,l1,t0,g0,(0
+    autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent
 augroup END
 " }}}
 " }}}
