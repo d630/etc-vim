@@ -780,6 +780,13 @@ augroup ft_c
     autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent
 augroup END
 " }}}
+" C# {{{
+augroup ft_cs
+    autocmd!
+    autocmd BufNewFile,BufEnter *.cs setlocal filetype=cs
+    autocmd FileType cs setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=100 commentstring=//\ %s
+augroup END
+" }}}
 " }}}
 " COLOR ------------------------------------------------------------------- {{{
 
