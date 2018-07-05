@@ -247,7 +247,7 @@ set ttymouse=xterm2
 " 10  'balloonexpr'     'bexpr'   expression to show in balloon
 " 10  'browsedir'       'bsdir'   which directory to start browsing in
 " 10  'guifont'         'gfn'     GUI: Name(s) of font(s) to be used
-set guifont=monospace\ 9
+set guifont=monospace\ 10
 " 10  'guifontwide'     'gfw'     list of font names for double-wide characters
 " 10  'guiheadroom'     'ghr'     GUI: pixels room for window decorations
 " 10  'guioptions'      'go'      GUI: Which components and options are used
@@ -720,6 +720,33 @@ augroup misc " {{{
 augroup END " }}}
 " }}}
 " FILETYPES --------------------------------------------------------------- {{{
+" C {{{
+
+augroup ft_c
+    autocmd!
+    autocmd BufNewFile,BufEnter *.c setlocal filetype=c
+    autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent
+augroup END
+
+" }}}
+" C# {{{
+
+augroup ft_cs
+    autocmd!
+    autocmd BufNewFile,BufEnter *.cs setlocal filetype=cs
+    autocmd FileType cs setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=100 commentstring=//\ %s
+augroup END
+
+" }}}
+" Java {{{
+
+augroup ft_java
+    autocmd!
+    autocmd BufNewFile,BufEnter *.java setlocal filetype=java
+    autocmd FileType java setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=100 commentstring=//\ %s
+augroup END
+
+" }}}
 " Markdown {{{
 
 augroup ft_markdown
@@ -735,14 +762,6 @@ augroup ft_markdown.pandoc
     autocmd!
     autocmd BufNewFile,BufRead *.mkd setlocal filetype=markdown.pandoc
     autocmd FileType markdown.pandoc setlocal expandtab shiftwidth=4 softtabstop=0 tabstop=4
-augroup END
-
-" }}}
-" Tex {{{
-
-augroup ft_tex
-    autocmd!
-    autocmd BufNewFile,BufRead *.lco setlocal filetype=tex
 augroup END
 
 " }}}
@@ -766,26 +785,20 @@ augroup ft_sh
 augroup END
 
 " }}}
-" Java {{{
-augroup ft_java
+" SQL {{{
+augroup ft_sql
     autocmd!
-    autocmd BufNewFile,BufEnter *.java setlocal filetype=java
-    autocmd FileType java setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=100 commentstring=//\ %s
+    autocmd BufNewFile,BufEnter *.sql setlocal filetype=sql
+    autocmd FileType sql setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=0 tabstop=4 colorcolumn=80 commentstring=--\ %s
 augroup END
 " }}}
-" C {{{
-augroup ft_c
+" Tex {{{
+
+augroup ft_tex
     autocmd!
-    autocmd BufNewFile,BufEnter *.c setlocal filetype=c
-    autocmd FileType c setlocal noexpandtab foldmethod=syntax shiftwidth=8 softtabstop=8 tabstop=8 colorcolumn=80 commentstring=//\ %s cindent
+    autocmd BufNewFile,BufRead *.lco setlocal filetype=tex
 augroup END
-" }}}
-" C# {{{
-augroup ft_cs
-    autocmd!
-    autocmd BufNewFile,BufEnter *.cs setlocal filetype=cs
-    autocmd FileType cs setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=100 commentstring=//\ %s
-augroup END
+
 " }}}
 " }}}
 " COLOR ------------------------------------------------------------------- {{{
@@ -864,4 +877,4 @@ let g:pandoc#hypertext#autosave_on_edit_open_link = 1
 " }}}
 " }}}
 
-" vim:et foldmethod=marker foldlevel=0
+" vim:et foldmethod=marker foldlevel=0 shiftwidth=4 softtabstop=0 tabstop=4 :
