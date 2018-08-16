@@ -765,6 +765,13 @@ augroup ft_markdown.pandoc
 augroup END
 
 " }}}
+" PHP {{{
+augroup ft_php
+    autocmd!
+    autocmd BufNewFile,BufEnter *.php setlocal filetype=php
+    autocmd FileType php setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80 commentstring=//\ %s
+augroup END
+" }}}
 " Shell {{{
 
 let b:sh_indent_options = {}
@@ -797,6 +804,14 @@ augroup END
 augroup ft_tex
     autocmd!
     autocmd BufNewFile,BufRead *.lco setlocal filetype=tex
+augroup END
+
+" }}}
+" xml {{{
+augroup ft_xml
+    autocmd!
+    autocmd BufNewFile,BufRead *.xml setlocal filetype=xml
+    autocmd FileType xml setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80
 augroup END
 
 " }}}
