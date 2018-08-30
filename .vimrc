@@ -738,6 +738,21 @@ augroup ft_cs
 augroup END
 
 " }}}
+" css {{{
+augroup ft_css
+    autocmd!
+    autocmd BufNewFile,BufRead *.css setlocal filetype=css
+    autocmd FileType css setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80
+augroup END
+
+" }}}
+" html {{{
+augroup ft_html
+    autocmd!
+    autocmd BufNewFile,BufRead *.html setlocal filetype=html
+    autocmd FileType html setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80
+augroup END
+" }}}
 " Java {{{
 
 augroup ft_java
