@@ -1,20 +1,6 @@
-" MAIN1 ------------------------------------------------------------------- {{{
+" MAIN1 ------------------------------------------------------------------- 
 
-filetype off
-autocmd!
-if &loadplugins == 1
-    call pathogen#infect()
-    call pathogen#helptags()
-endif
-set nocompatible
-filetype indent plugin on
 
-if isdirectory($XDG_RUNTIME_DIR . '/vim' ) == 0
-    :silent !install -dm700 $XDG_RUNTIME_DIR/vim >/dev/null 2>&1
-endif
-set directory=$XDG_RUNTIME_DIR/vim//
-
-" }}}
 " SETTINGS ---------------------------------------------------------------- {{{
 " 0   unknown {{{
 " 0   'antialias'       'anti'    Mac OS X: use smooth, antialiased fonts
