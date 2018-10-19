@@ -762,6 +762,15 @@ augroup ft_java
 augroup END
 
 " }}}
+" JavaScript {{{
+
+augroup ft_javascript
+    autocmd!
+    autocmd BufNewFile,BufEnter *.js setlocal filetype=javascript
+    autocmd FileType javascript setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80 commentstring=//\ %s
+augroup END
+
+" }}}
 " Markdown {{{
 
 augroup ft_markdown
