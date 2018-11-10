@@ -228,6 +228,10 @@ set ttyfast
 " 8   'ttyscroll'       'tsl'     maximum number of lines for a scroll
 " 8   'ttytype'         'tty'     alias for 'term'
 " 8   'weirdinvert'     'wiv'     for terminals that have weird inversion method
+
+" manipulate termcap. remove bold fonts:
+set t_md=
+
 " }}}
 " 9   using the mouse {{{
 " 9   'mouse'                     enable the use of mouse clicks
