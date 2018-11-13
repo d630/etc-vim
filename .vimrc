@@ -775,6 +775,15 @@ augroup ft_javascript
 augroup END
 
 " }}}
+" Json {{{
+
+augroup ft_json
+    autocmd!
+    autocmd BufNewFile,BufEnter *.json setlocal filetype=json
+    autocmd FileType json setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80 commentstring=
+augroup END
+
+" }}}
 " Markdown {{{
 
 augroup ft_markdown
@@ -794,10 +803,15 @@ augroup END
 
 " }}}
 " PHP {{{
+
+let g:PHP_vintage_case_default_indent = 1
+let g:PHP_noArrowMatching = 1
+let php_parent_error_close = 1
+
 augroup ft_php
     autocmd!
     autocmd BufNewFile,BufEnter *.php setlocal filetype=php
-    autocmd FileType php setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80 commentstring=//\ %s
+    autocmd FileType php setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80 commentstring=//\ %s makeprg=parallel-lint\ --colors\ --no-progress\ -j\ 1\ %
 augroup END
 " }}}
 " Shell {{{
