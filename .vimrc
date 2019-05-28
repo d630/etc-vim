@@ -251,7 +251,7 @@ set ttymouse=xterm2
 " 10  'balloonexpr'     'bexpr'   expression to show in balloon
 " 10  'browsedir'       'bsdir'   which directory to start browsing in
 " 10  'guifont'         'gfn'     GUI: Name(s) of font(s) to be used
-set guifont=monospace\ 10
+set guifont=monospace\ 9
 " 10  'guifontwide'     'gfw'     list of font names for double-wide characters
 " 10  'guiheadroom'     'ghr'     GUI: pixels room for window decorations
 " 10  'guioptions'      'go'      GUI: Which components and options are used
@@ -813,6 +813,15 @@ augroup ft_php
     autocmd BufNewFile,BufEnter *.php setlocal filetype=php
     autocmd FileType php setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80 commentstring=//\ %s makeprg=parallel-lint\ --colors\ --no-progress\ -j\ 1\ %
 augroup END
+" }}}
+" Python {{{
+
+augroup ft_python
+    autocmd!
+    autocmd BufNewFile,BufEnter *.py setlocal filetype=python
+    autocmd FileType python setlocal expandtab foldmethod=syntax colorcolumn=88
+augroup END
+
 " }}}
 " Shell {{{
 
