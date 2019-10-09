@@ -866,6 +866,14 @@ augroup ft_xml
 augroup END
 
 " }}}
+" Yaml {{{
+
+augroup ft_yaml
+    autocmd!
+    autocmd BufNewFile,BufEnter *.yaml setlocal filetype=yaml
+    autocmd FileType yaml setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80 commentstring=
+augroup END
+
 " }}}
 " COLOR ------------------------------------------------------------------- {{{
 
