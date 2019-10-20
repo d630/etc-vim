@@ -9,10 +9,10 @@ endif
 set nocompatible
 filetype indent plugin on
 
-if isdirectory($XDG_RUNTIME_DIR . '/vim' ) == 0
-    :silent !install -dm700 $XDG_RUNTIME_DIR/vim >/dev/null 2>&1
+if isdirectory($XDG_CACHE_HOME . '/vim' ) == 0
+    :silent !install -dm700 $XDG_CACHE_HOME/vim >/dev/null 2>&1
 endif
-set directory=$XDG_RUNTIME_DIR/vim//
+set directory=$XDG_CACHE_HOME/vim//
 
 " }}}
 " SETTINGS ---------------------------------------------------------------- {{{
@@ -456,7 +456,6 @@ set nowritebackup
 " }}}
 " 20  the swap file {{{
 " 20  'directory'       'dir'     list of directory names for the swap file
-" set directory=$XDG_RUNTIME_DIR/vim//
 " 20  'maxmem'          'mm'      maximum memory (in Kbyte) used for one buffer
 " 20  'maxmemtot'       'mmt'     maximum memory (in Kbyte) used for all buffers
 " 20  'swapfile'        'swf'     whether to use a swapfile for a buffer
@@ -664,55 +663,7 @@ vmap <silent> <del>      <nop>
 
 " }}}
 " MISC -------------------------------------------------------------------- {{{
-function! AppendModeline() " {{{
-    let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set :",
-        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no')
-    let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-    call append(line("$"), l:modeline)
-endfunction " }}}
-nnoremap <silent> <leader>ml :call AppendModeline()<cr>
-function! ToggleSyntax() " {{{
-    if exists("g:syntax_on")
-        syntax off
-    else
-        syntax enable
-    endif
-endfunction " }}}
-function! ToggleColorColumn() " {{{
-    if &colorcolumn
-        set colorcolumn=0
-    else
-        set colorcolumn=80
-    endif
-endfunction " }}}
-function! ToggleConceal() " {{{
-    if &conceallevel
-        set conceallevel=0
-        echomsg "conceallevel disabled"
-    else
-        set conceallevel=2
-        echomsg "conceallevel enabled"
-    endif
-endfunction " }}}
-function! ToggleWrap() " {{{
-    if (&wrap == 1)
-        if (&linebreak == 0)
-            set linebreak
-        else
-            set nowrap
-        endif
-    else
-        set wrap
-        set nolinebreak
-    endif
-endfunction " }}}
-function! ToggleBar() " {{{
-    if (&laststatus == 0)
-        set laststatus=2
-    else
-        set laststatus=0
-    endif
-endfunction " }}}
+
 augroup misc " {{{
     autocmd!
 
@@ -722,6 +673,7 @@ augroup misc " {{{
     autocmd InsertEnter * silent! match ExtraWhitespace /\s\+\%#\@<!$/
     autocmd BufWritePre * :%s/\s\+$//e
 augroup END " }}}
+
 " }}}
 " FILETYPES --------------------------------------------------------------- {{{
 " C {{{
@@ -743,6 +695,7 @@ augroup END
 
 " }}}
 " css {{{
+
 augroup ft_css
     autocmd!
     autocmd BufNewFile,BufRead *.css setlocal filetype=css
@@ -751,11 +704,13 @@ augroup END
 
 " }}}
 " html {{{
+
 augroup ft_html
     autocmd!
     autocmd BufNewFile,BufRead *.html setlocal filetype=html
     autocmd FileType html setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80
 augroup END
+
 " }}}
 " Java {{{
 
@@ -813,6 +768,7 @@ augroup ft_php
     autocmd BufNewFile,BufEnter *.php setlocal filetype=php
     autocmd FileType php setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=80 commentstring=//\ %s makeprg=parallel-lint\ --colors\ --no-progress\ -j\ 1\ %
 augroup END
+
 " }}}
 " Python {{{
 
@@ -844,11 +800,13 @@ augroup END
 
 " }}}
 " SQL {{{
+
 augroup ft_sql
     autocmd!
     autocmd BufNewFile,BufEnter *.sql setlocal filetype=sql
     autocmd FileType sql setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=0 tabstop=4 colorcolumn=80 commentstring=--\ %s
 augroup END
+
 " }}}
 " Tex {{{
 
@@ -859,6 +817,7 @@ augroup END
 
 " }}}
 " xml {{{
+
 augroup ft_xml
     autocmd!
     autocmd BufNewFile,BufRead *.xml setlocal filetype=xml
@@ -895,10 +854,12 @@ augroup color_solarized
     autocmd BufWritePost solarized.vim color solarized
 augroup END
 
+
 " Highlight VCS conflict markers
 match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
 
 highlight Specialkey term=NONE cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
+highlight CursorLineNr term=NONE cterm=NONE gui=NONE ctermbg=NONE guibg=NONE
 highlight ExtraWhitespace ctermbg=red guibg=red
 
 " }}}
