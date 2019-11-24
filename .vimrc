@@ -676,6 +676,15 @@ augroup END " }}}
 
 " }}}
 " FILETYPES --------------------------------------------------------------- {{{
+" AWK {{{
+
+augroup ft_awk
+    autocmd!
+    autocmd BufNewFile,BufEnter *.awk setlocal filetype=awk
+    autocmd FileType awk setlocal noexpandtab foldmethod=syntax shiftwidth=4 softtabstop=0 tabstop=4 cindent
+augroup END
+
+" }}}
 " C {{{
 
 augroup ft_c
