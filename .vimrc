@@ -804,7 +804,7 @@ let g:sh_fold_enabled = 3
 augroup ft_sh
     autocmd!
     autocmd BufNewFile,BufEnter *.{da,mk}sh setlocal filetype=sh
-    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=0 tabstop=4
+    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=0 tabstop=4 colorcolumn=100
 augroup END
 
 " }}}
