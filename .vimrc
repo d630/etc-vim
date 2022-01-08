@@ -681,7 +681,7 @@ augroup END " }}}
 augroup ft_awk
     autocmd!
     autocmd BufNewFile,BufEnter *.awk setlocal filetype=awk
-    autocmd FileType awk setlocal noexpandtab foldmethod=syntax shiftwidth=4 softtabstop=0 tabstop=4 cindent
+    autocmd FileType awk setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=0 tabstop=4 cindent
 augroup END
 
 " }}}
@@ -709,6 +709,15 @@ augroup ft_css
     autocmd!
     autocmd BufNewFile,BufRead *.css setlocal filetype=css
     autocmd FileType css setlocal expandtab foldmethod=syntax shiftwidth=2 softtabstop=2 tabstop=2 colorcolumn=80
+augroup END
+
+" }}}
+" Grrovy {{{
+
+augroup ft_groovy
+    autocmd!
+    autocmd BufNewFile,BufRead *.groovy setlocal filetype=groovy
+    autocmd FileType groovy setlocal expandtab foldmethod=syntax shiftwidth=4 softtabstop=4 tabstop=4 colorcolumn=100 commentstring=//\ %s
 augroup END
 
 " }}}
@@ -804,7 +813,7 @@ let g:sh_fold_enabled = 3
 augroup ft_sh
     autocmd!
     autocmd BufNewFile,BufEnter *.{da,mk}sh setlocal filetype=sh
-    autocmd FileType sh setlocal noexpandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=0 tabstop=4 colorcolumn=100
+    autocmd FileType sh setlocal expandtab foldmethod=syntax makeprg=shellcheck\ -f\ gcc\ % shiftwidth=4 softtabstop=0 tabstop=4 colorcolumn=100
 augroup END
 
 " }}}
